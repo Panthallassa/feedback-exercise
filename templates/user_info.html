@@ -1,0 +1,64 @@
+{% extends 'base.html' %} {% block title%}User Information -
+{{ user.username }}{% endblock %} {% block content %}
+
+<div class="container">
+	<h1 class="display-3">User Information</h1>
+	<div class="card">
+		<div class="card-body">
+			<h3 class="card-title">
+				Username: {{ user.username }}
+			</h3>
+			<p class="card-text">Email: {{ user.email }}</p>
+			<p class="card-text">
+				First Name: {{ user.first_name }}
+			</p>
+			<p class="card-text">
+				Last Name: {{ user.last_name }}
+			</p>
+			<h2>Feedback</h2>
+			<ul>
+				{% for feedback in user.feedback %}
+				<li>
+					<strong>{{ feedback.title }}</strong>: {{
+					feedback.content }}
+					<form
+						method="POST"
+						action="{{ url_for('delete_feedback', feedback_id=feedback.id) }}"
+						style="display: inline"
+					>
+						<button
+							type="submit"
+							class="btn btn-danger btn-sm"
+						>
+							x
+						</button>
+					</form>
+				</li>
+				{% endfor %}
+			</ul>
+			<a
+				href="{{ url_for('add_feedback', username=user.username) }}"
+				class="btn btn-primary"
+				>Add Feedback</a
+			>
+			<form
+				action="{{ url_for('delete_user', username=user.username) }}"
+				method="POST"
+				class="mt-3"
+			>
+				<button class="btn btn-danger">
+					Delete Account
+				</button>
+			</form>
+			<form
+				action="{{ url_for('logout') }}"
+				method="GET"
+				class="mt-3"
+			>
+				<button class="btn btn-secondary">Logout</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
